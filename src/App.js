@@ -6,24 +6,49 @@ import './App.css'
 
 function App() {
     const [newItem, setNewItem] = useState("");
+    const [items, setItems] = useState([]);
+
 
     function addItem() {
-      console.log(newItem)
-    }
+      
+      if (!newItem) {
+        alert("Enter valid data")
+        return
+      };
+
+      const item = {
+        id: Math.floor(Math.random() * 10000),
+        value: newItem
+      };
+
+      setItems(oldList => [...oldList, item]);
+      setNewItem("");
+      console.log(items);
+    };
+
+    function deleteItem(id) {
+      const newArray = items.filter(item => item.id !== id);
+      setItems(newArray);
+
+    };
+
+
   return (
-    <>
+    <div className='App'>
       <h1>Todo App</h1>
       <input type="text" placeholder='Add Item...' value={newItem} onChange={e => setNewItem(e.target.value)} />
       <button onClick={() => addItem()}>Add</button>
 
       <ul>
-        <li>list a</li>
-        
-        <li>list b</li>
-        <li>list c</li>
+        {items.map(item => {
+          return(
+            <li key={item.id}> {item.value} <button onClick={() => deleteItem(item.id)}> X </button></li>
+          )
+
+        })}
       </ul>
 
-    </>
+    </div>
   );
 }
 
